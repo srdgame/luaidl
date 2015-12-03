@@ -1,15 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "LuaIDL"
-version = "0.8.9beta-1"
+version = "1.0.5-1"
 -- LuaDist source
 source = {
-  tag = "0.8.9beta-1",
+  tag = "1.0.5-1",
   url = "git://github.com/LuaDist2/luaidl.git"
 }
 -- Original source
 -- source = {
--- 	url = "http://luaforge.net/frs/download.php/3543/luaidl-0.8.9-beta.tar.gz",
+-- 	url = "http://www.tecgraf.puc-rio.br/~maia/oil/luaidl-1.0.5.tar.gz",
+-- 	md5 = "8afb52c83792dce91c0ad5153a89a583",
 -- }
 description = {
 	summary = "A OMG IDL Compiler Front End",
@@ -23,8 +24,8 @@ description = {
 		it is completely implemented in Lua and does not have external dependencies.
 	]],
 	license = "MIT/X11",
-	homepage = "http://oil.luaforge.net/luaidl",
-	maintainer = "Ricardo Calheiros <rcosme@tecgraf.puc-rio.br>",
+	homepage = "http://www.tecgraf.puc-rio.br/~maia/oil/luaidl",
+	maintainer = "Ricardo Cosme <rcosme@tecgraf.puc-rio.br>",
 }
 dependencies = {
 	"lua >= 5.1",
@@ -33,10 +34,10 @@ build = {
 	type = "none",
 	install = {
 		lua = {
-			["luaidl"] = "luaidl.lua",
-			["luaidl.pre"] = "luaidl/pre.lua",
 			["luaidl.lex"] = "luaidl/lex.lua",
+			["luaidl.pre"] = "luaidl/pre.lua",
 			["luaidl.sin"] = "luaidl/sin.lua",
+			["luaidl"] = "luaidl.lua",
 		},
 	},
 }
