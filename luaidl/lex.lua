@@ -4,17 +4,9 @@
 -- Filename: lex.lua
 --
 
-local type     = type
-local pairs    = pairs
-local tonumber = tonumber
-local error    = error
-local ipairs   = ipairs
-local table    = table
-local string   = require "string"
+local _M = {}
 
-module 'luaidl.lex'
-
-tab_tokens = {
+local tab_tokens = {
   TK_ID = 257, TK_ABSTRACT = 258, TK_ANY = 259, TK_ATTRIBUTE = 260,
   TK_BOOLEAN = 261, TK_CASE = 262, TK_CHAR = 263, TK_COMPONENT = 264,
   TK_CONST = 265, TK_CONSUMES = 266, TK_CONTEXT = 267, TK_CUSTOM = 268,
@@ -36,6 +28,7 @@ tab_tokens = {
   TK_WSTRING_LITERAL = 327, TK_FIXED_LITERAL = 328, TK_PRAGMA_PREFIX = 329,
   TK_PRAGMA_ID = 330, TK_MANAGES = 332,
 }
+_M.tab_tokens = tab_tokens
 
 local tab_keywords = {
   ['abstract']      = { token = tab_tokens.TK_ABSTRACT },
@@ -107,7 +100,8 @@ local tab_keywords = {
 
 local tab_symbols
 
-PRAGMA_VERSION          = '1.0'
+_M.PRAGMA_VERSION          = '1.0'
+
 local ERROR_MSG_TYPE    = '[lexical error]:_LINE:_ERRORMSG.'
 
 local token
@@ -214,7 +208,7 @@ local function getchar(stridl)
   end
 end
 
-function init()
+function _M.init()
   tab_symbols           = { }
   token                 = nil
   tokenvalue            = '<EOF>'
@@ -227,7 +221,7 @@ function init()
   stridllen             = nil
 end
 
-function lexer(stridl)
+function _M.lexer(stridl)
   if not stridllen then
     init()
     stridllen = string.len(stridl)
@@ -791,3 +785,5 @@ function lexer(stridl)
     end
   end
 end
+
+return _M

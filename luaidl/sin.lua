@@ -350,20 +350,10 @@
 --(378)                         |     empty
 --(379) <context>               :=    TK_STRING_LITERAL
 
-local type     = type
-local pairs    = pairs
-local tonumber = tonumber
-local require  = require
-local error    = error
-local ipairs   = ipairs
-
-local math     = require "math"
-local string   = require "string"
-local table    = require "table"
-
-module 'luaidl.sin'
 
 local lex = require 'luaidl.lex'
+
+local _M = {}
 
 local tab_firsts = {}
 local tab_follow = {}
@@ -1225,9 +1215,9 @@ local function define(name, type, namespace)
   local absolutename = getAbsolutename(currentScope, name)
   local definitions
 
--- Esta definição já foi declarada anteriormente?
+-- Esta defini??o j? foi declarada anteriormente?
   if (namespaces[absolutename]) then
-  -- Um módulo está sendo reaberto?
+  -- Um m?dulo est? sendo reaberto?
     if (
         (namespaces[absolutename].namespace._type == TAB_TYPEID.MODULE)
           and
@@ -1243,7 +1233,7 @@ local function define(name, type, namespace)
     end
   end
 
--- A definição já foi declarada como forward?
+-- A defini??o j? foi declarada como forward?
   if forwardDeclarations[absolutename] then
     namespace = forwardDeclarations[absolutename]
     forwardDeclarations[absolutename] = nil
@@ -1299,7 +1289,7 @@ end
 
 local function getDefinition(name, baseScope)
   local scope = currentScope
--- Busca uma definição em um escopo previamente fornecido.
+-- Busca uma defini??o em um escopo previamente fornecido.
   if baseScope then
     local definition = getTabDefinition(baseScope..'::'..name)
     if (definition) then
@@ -1313,7 +1303,7 @@ local function getDefinition(name, baseScope)
         return definition
       end
       if (scope._type == TAB_TYPEID.INTERFACE) then
-      -- Busca a definição nas interfaces de base.
+      -- Busca a defini??o nas interfaces de base.
         for _, base in ipairs(scope) do
           absolutename = getAbsolutename(namespaces[base.absolute_name].namespace, name)
           local definition = getTabDefinition(absolutename)
@@ -1322,7 +1312,7 @@ local function getDefinition(name, baseScope)
           end
         end
       end
-    -- Se a definição não foi encontrada no escopo atual, então a busca continua
+    -- Se a defini??o n?o foi encontrada no escopo atual, ent?o a busca continua
     -- no escopo *pai*.
       if (scope ~= output) then
         scope = namespaces[scope.absolute_name].father_scope
@@ -1339,7 +1329,7 @@ local function getDefinition(name, baseScope)
   semanticError(string.format(ERRMSG_UNDECLARED, name))
 end
 
--- Define uma declaração forward.
+-- Define uma declara??o forward.
 local function dclForward(name, type)
   local absolute_name = getAbsolutename(currentScope, name)
   local definition = namespaces[absolute_name] or
@@ -3569,7 +3559,7 @@ end
 -- API
 --------------------------------------------------------------------------
 
-function parse(stridl, options)
+function _M.parse(stridl, options)
   if not options then
     options = {}
   end
@@ -3596,14 +3586,14 @@ function parse(stridl, options)
     callbacks = {}
   end
 
--- Estrutura que armazena o grafo de saída.
--- A tabela é inicializada com o escopo 'GLOBAL'.
+-- Estrutura que armazena o grafo de sa?da.
+-- A tabela ? inicializada com o escopo 'GLOBAL'.
   output                    = {absolute_name = ''}
   currentScope              = output
 
--- Estrutura que armazena informações pertinentes a cada identificador mapeado.
--- Auxilia o processo de geração do grafo de saída.
--- A tabela é indexada por *absolute name*.
+-- Estrutura que armazena informa??es pertinentes a cada identificador mapeado.
+-- Auxilia o processo de gera??o do grafo de sa?da.
+-- A tabela ? indexada por *absolute name*.
   namespaces                = {[''] = {namespace = output}}
   forwardDeclarations       = {}
   idl                       = stridl
@@ -3629,3 +3619,5 @@ function parse(stridl, options)
   end
   return output
 end
+
+return _M

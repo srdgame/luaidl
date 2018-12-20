@@ -4,16 +4,7 @@
 -- Filename: pre.lua
 --
 
-local error  = error
-local io     = require "io"
-local os     = require "os"
-local ipairs = ipairs
-local pairs  = pairs
-local string = require "string"
-local table  = require "table"
-local type   = type
-
-module 'luaidl.pre'
+local _M = {}
 
 local tab_macros
 local currNumLine
@@ -120,7 +111,7 @@ function scanner(source, ptab_options)
   return table.concat(output)
 end
 
-function run(source, ptab_options)
+function _M.run(source, ptab_options)
   tab_macros = {}
   currNumLine = 1
   isProcessing = true
@@ -147,3 +138,5 @@ function run(source, ptab_options)
   end
   return scanner(source, tab_options)
 end
+
+return _M

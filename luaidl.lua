@@ -3,23 +3,13 @@
 -- Author:   Ricardo Cosme <rcosme@tecgraf.puc-rio.br>
 -- Filename: init.lua
 -- 
-local assert  = assert
-local error   = error
-local pcall   = pcall
-local require = require
-local type    = type
-local unpack  = unpack
-
-local io      = require "io"
-local os      = require "os"
-local string  = require "string"
-
-module 'luaidl'
 
 local preprocessor  = require 'luaidl.pre'
 local parser        = require 'luaidl.sin'
 
-VERSION = '1.0.5'
+local _M = {}
+
+_M.VERSION = '1.0.5'
 
 ---
 -- Auxiliar functions
@@ -47,7 +37,7 @@ end
 -- 'incpath', a table with include paths;
 -- 'filename', the IDL filename.
 -- @return String with the given IDL preprocessed.
-function pre(idl, options)
+function _M.pre(idl, options)
   return preprocessor.run(idl, options)
 end
 
@@ -58,7 +48,7 @@ end
 -- 'incpath', a table with include paths.
 -- @return String with the given IDL preprocessed.
 -- @see pre
-function prefile(filename, options)
+function _M.prefile(filename, options)
   local _type = type(filename)
   if (_type ~= "string") then
     error(string.format("bad argument #1 to 'prefile' (filename expected, got %s)", _type), 2)
@@ -85,7 +75,7 @@ end
 -- 'filename',the IDL filename.
 -- @return A graph(lua table),
 -- that represents an IDL definition in Lua, for each IDL definition found.
-function parse(idl, options)
+function _M.parse(idl, options)
   idl = pre(idl, options)
   return parseAux(idl, options)
 end
@@ -102,7 +92,7 @@ end
 -- that represents an IDL definition in Lua, for each IDL definition found.
 -- @see prefile 
 -- @see parse
-function parsefile(filename, options)
+function _M.parsefile(filename, options)
   local _type = type(filename)
   if (_type ~= "string") then
     error(string.format("bad argument #1 to 'parsefile' (filename expected, got %s)", _type), 2)
@@ -111,3 +101,5 @@ function parsefile(filename, options)
   return parseAux(stridl, options)
 end
 --------------------------------------------------------------------------
+
+return _M
